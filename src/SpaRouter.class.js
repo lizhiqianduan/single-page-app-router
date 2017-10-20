@@ -233,20 +233,24 @@
 	 */
 	win.SpaRouter.prototype._init = function () {
 		var self = this;
+		// 当前浏览器中的实际路由
 		var truePath = this.getCurrentTruePath();
+		// 初始化时的路由
 		var initRoute = this.getRouteByPath(truePath);
 		
-		// 浏览器刷新的处理。默认跳转至首页
-		this.to((initRoute/* && initRoute.path!=="*"*/)?truePath:"/");
-		
-		
 		if(this.mode==="history"){
+			// 浏览器刷新的处理。默认跳转至首页
+			this.to((initRoute && initRoute.path!=="*")?truePath:"/");
+			// 监听变化
 			window.addEventListener("popstate",function (e) {
 				if(!e.state){ self.to("/"); return null;}
 				var route = self.getRouteByPath(e.state.path);
 				self.root.innerHTML = route.controller();
 			})
 		}else if(this.mode==="hash"){
+			// 浏览器刷新的处理。默认跳转至首页
+			this.to(initRoute?truePath:"/");
+			// 监听变化
 			window.addEventListener("hashchange",function (e) {
 				var route = self.getRouteByPath(location.hash);
 				self.root.innerHTML = route.controller();
