@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>router示例</title>
+</head>
+<body>
+
+
+<div>测试首页：<a href="javascript:router.to('/')">/</a></div>
+<div>基本使用：<a href="javascript:router.to('/base')">/base</a></div>
+<div>404页：<a href="javascript:router.to('/sdfsdf')">/sdfsdf</a></div>
+<div>带参数跳转：<a href="javascript:router.to('/params/666/lizhiqianduan')">/params/666/lizhiqianduan</a></div>
+<div>带参数跳转：<a href="javascript:router.to('/params/888/xiaohei')">/params/888/xiaohei</a></div>
+
+<br><br>
+以下是渲染区
+<hr>
+<div id="app">
+
+</div>
+
+
+
+
+
+</body>
+</html>
+
+<script src="../../src/SpaRouter.class.js"></script>
+
+<script>
+
+
+
+
+
+
+
+
+	var router = new SpaRouter({
+		mode:"hash",
+		base:"/",
+		root:document.getElementById("app"),
+
+		beforeEach:function (from,to) {
+			console.log("Route change:",from.absolutePath," => ",to.absolutePath);
+		},
+
+		routes:[
+			{
+				path:"/",
+				template:"首页模板"
+			},
+			{
+				path:"base",
+				template:"基本模板",
+				children:[
+					{
+						path:"bb",
+						template:"模板",
+						children:[
+							{path:"cc",template:"cccccccccccc"},
+							{path:"dd",template:"ddddddddddd"},
+							{path:"ee",template:"eeeeeeeeeeee"},
+						]
+					}
+				]
+
+			},
+			{
+				path:"params",
+				template:"给路由传递参数的示例，可以从controller中获取参数，再填入至模板内",
+				children:[
+					{
+						path:":id/:name",
+						controller:function () {
+							return "带参数传递模板。从controller中获取参数，再填入至模板内。<br>参数为："+JSON.stringify(this.params);
+						}
+					}
+				]
+			},
+			{
+				path:"*",
+				template:"404模板"
+			}
+
+		]
+	});
+
+
+
+</script>
