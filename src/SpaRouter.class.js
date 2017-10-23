@@ -252,7 +252,7 @@
 			this.to(initRoute?truePath:"/");
 			// 监听变化
 			window.addEventListener("hashchange",function (e) {
-				var route = self.getRouteByPath(location.hash);
+				var route = self.getRouteByPath(location.hash.slice(1));
 				self.root.innerHTML = route.controller();
 			})
 		}
@@ -296,7 +296,11 @@
 	 * @returns {boolean}			返回boolean
 	 */
 	function matchPath(pathPattern,path) {
-		var reg = new RegExp(pathPattern.replace(/:.+?\//g,"([^\/])+\/"));
+		// 路径匹配正则表达式
+		var regStr = pathPattern.replace(/:.+?\//g,"([^\/])+\/");
+		// 结尾标识符
+		regStr+="$";
+		var reg = new RegExp(regStr);
 		return reg.test(path);
 	}
 
